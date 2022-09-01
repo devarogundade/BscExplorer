@@ -5,9 +5,11 @@ import dagger.hilt.android.EntryPointAccessors
 import dev.arogundade.library.data.models.account.Balance
 import dev.arogundade.library.data.models.account.InternalTransaction
 import dev.arogundade.library.data.models.account.Transaction
+import dev.arogundade.library.data.models.stat.Price
 import dev.arogundade.library.data.models.stat.Validator
 import dev.arogundade.library.data.repository.AccountRepository
 import dev.arogundade.library.data.repository.StatRepository
+import dev.arogundade.library.data.repository.TokenRepository
 import dev.arogundade.library.data.repository.TransactionRepository
 import dev.arogundade.library.exception.ApiKeyException
 import dev.arogundade.library.exception.PerPageException
@@ -93,7 +95,7 @@ class BscExplorer private constructor(builder: Builder, context: Context) {
     }
 
     /*
-    * transaction module related functions
+    * transactions module related functions
     * https://docs.bscscan.com/api-endpoints/stats
     * */
     private fun transactionRepository(): TransactionRepository {
@@ -101,7 +103,15 @@ class BscExplorer private constructor(builder: Builder, context: Context) {
     }
 
     /*
-    * stat module related functions
+    * tokens module related functions
+    * https://docs.bscscan.com/api-endpoints/tokens
+    * */
+    private fun tokenRepository(): TokenRepository {
+        return hiltEntryPoint.tokenRepository()
+    }
+
+    /*
+    * stats module related functions
     * https://docs.bscscan.com/api-endpoints/stats
     * */
     private fun statRepository(): StatRepository {
@@ -162,6 +172,14 @@ class BscExplorer private constructor(builder: Builder, context: Context) {
         )
     }
 
+    suspend fun getCirculatingSupply(contractAddress: String): Status<Double?> {
+        return tokenRepository().getTokenCirculatingSupply(contractAddress, key)
+    }
+
+    suspend fun getTotalSupply(contractAddress: String): Status<Double?> {
+        return tokenRepository().getTokenTotalSupply(contractAddress, key)
+    }
+
     /*
     * check status of a transaction execution
     * https://docs.bscscan.com/api-endpoints/stats
@@ -176,6 +194,10 @@ class BscExplorer private constructor(builder: Builder, context: Context) {
     * */
     suspend fun getValidators(): Status<List<Validator>?> {
         return statRepository().getValidators(key)
+    }
+
+    suspend fun lastPrice(): Status<Price?> {
+        return statRepository().lastPrice(key)
     }
 
 }

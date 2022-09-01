@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dev.arogundade.library.BscExplorer
+import dev.arogundade.library.utils.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,13 +24,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val address = "0x9E47A9f1843Ebd9339C53E0732FbD540A2Ea43AC"
+        val contractAddress = "0x186866858aEf38c05829166A7711b37563e15994"
+
         CoroutineScope(Dispatchers.IO).launch {
-            val result = explorer.getInternalTransactions("0x9E47A9f1843Ebd9339C53E0732FbD540A2Ea43AC", 1)
+            val result = explorer.getBnbBalance(contractAddress)
             withContext(Dispatchers.Main) {
                 val tv = findViewById<TextView>(R.id.text)
-                tv.text = result.e?.message.toString()
-                result.data?.forEach {
-                    tv.text = tv.text.toString() + "\n" + it.value
+                if (result is Status.Failure) {
+                    tv.text = result.e?.message.toString()
+                } else {
+                    tv.text = result.data.toString()
                 }
             }
         }

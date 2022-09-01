@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.arogundade.library.remote.clients.AccountClient
 import dev.arogundade.library.remote.clients.StatClient
+import dev.arogundade.library.remote.clients.TokenClient
 import dev.arogundade.library.remote.clients.TransactionClient
 import dev.arogundade.library.utils.Keys.BSC_BASE_URL
 import okhttp3.OkHttpClient
@@ -22,24 +23,20 @@ object Modules {
 
     @Provides
     @Singleton
-    fun okHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder().apply {
-            connectTimeout(60L, TimeUnit.SECONDS)
-        }.build()
-    }
+    fun retrofit(): Retrofit {
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(60L, TimeUnit.SECONDS)
+            .build()
 
-    @Provides
-    @Singleton
-    fun retrofit(okHttpClient: OkHttpClient): Retrofit {
         val gson = GsonBuilder()
             .setLenient()
             .create()
 
-        return Retrofit.Builder().apply {
-            client(okHttpClient)
-            baseUrl(BSC_BASE_URL)
-            addConverterFactory(GsonConverterFactory.create(gson))
-        }.build()
+        return Retrofit.Builder()
+            .client(okHttpClient)
+            .baseUrl(BSC_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
     }
 
     @Provides
@@ -52,6 +49,12 @@ object Modules {
     @Singleton
     fun transactionClient(retrofit: Retrofit): TransactionClient {
         return retrofit.create(TransactionClient::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun tokenClient(retrofit: Retrofit): TokenClient {
+        return retrofit.create(TokenClient::class.java)
     }
 
     @Provides
