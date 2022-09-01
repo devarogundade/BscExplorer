@@ -1,19 +1,19 @@
 package dev.arogundade.library.data.repository
 
-import dev.arogundade.library.remote.BscClient
 import dev.arogundade.library.remote.SafeCall.execute
+import dev.arogundade.library.remote.clients.AccountClient
 import dev.arogundade.library.utils.Sort
 import javax.inject.Inject
 
 class AccountRepository @Inject
-constructor(private val bscClient: BscClient) {
+constructor(private val accountClient: AccountClient) {
 
     suspend fun getBnbBalance(address: String, key: String) = execute {
-        bscClient.getBnbBalance(address = address, key = key).body()?.result
+        accountClient.getBnbBalance(address = address, key = key).body()?.result
     }
 
     suspend fun getBnbBalance(address: List<String>, key: String) = execute {
-        bscClient.getBnbBalance(address = address, key = key).body()?.result
+        accountClient.getBnbBalance(address = address, key = key).body()?.result
     }
 
     suspend fun getTransactions(
@@ -25,7 +25,7 @@ constructor(private val bscClient: BscClient) {
         sort: Sort,
         page: Int
     ) = execute {
-        bscClient.getTransactions(
+        accountClient.getTransactions(
             address = address,
             key = key,
             perPage = perPage,
@@ -45,7 +45,7 @@ constructor(private val bscClient: BscClient) {
         sort: Sort,
         page: Int
     ) = execute {
-        bscClient.getInternalTransactions(
+        accountClient.getInternalTransactions(
             address = address,
             key = key,
             perPage = perPage,

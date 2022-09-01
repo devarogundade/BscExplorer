@@ -5,7 +5,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.arogundade.library.remote.BscClient
+import dev.arogundade.library.remote.clients.AccountClient
+import dev.arogundade.library.remote.clients.StatClient
+import dev.arogundade.library.remote.clients.TransactionClient
 import dev.arogundade.library.utils.Keys.BSC_BASE_URL
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -42,8 +44,20 @@ object Modules {
 
     @Provides
     @Singleton
-    fun bscClient(retrofit: Retrofit): BscClient {
-        return retrofit.create(BscClient::class.java)
+    fun accountClient(retrofit: Retrofit): AccountClient {
+        return retrofit.create(AccountClient::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun transactionClient(retrofit: Retrofit): TransactionClient {
+        return retrofit.create(TransactionClient::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun statClient(retrofit: Retrofit): StatClient {
+        return retrofit.create(StatClient::class.java)
     }
 
 }
