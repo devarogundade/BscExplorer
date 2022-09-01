@@ -1,6 +1,6 @@
 # BscExplorer
 
-Android Client Library for to Binance Smart Chain Api functions.
+Android Client Library to all Binance Smart Chain Api functions.
 
 # Requirement
 - Hilt (Dependency Injection)
