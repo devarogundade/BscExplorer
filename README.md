@@ -15,6 +15,9 @@ Android Client Library to all Binance Smart Chain Api functions.
 <code>
   val weiToBnb = Converter.convert(value = 100000, from = Converter.Unit.Wei, to = Converter.Unit.BNB)
 </code>
+<br />
+<br />
+<b>Units <code>Wei, Kwei, Mwei, Gwei, Szabo, Finney, BNB</code></b>
 
 # Docs
 visit https://docs.bscscan.com to learn more about their api
