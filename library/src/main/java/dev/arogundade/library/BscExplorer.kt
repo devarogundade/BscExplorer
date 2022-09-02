@@ -122,7 +122,7 @@ class BscExplorer private constructor(builder: Builder, context: Context) {
     * get BNB balance for single BEP20 address
     * https://docs.bscscan.com/api-endpoints/accounts#get-bnb-balance-for-a-single-address
     * */
-    suspend fun getBnbBalance(address: String): Status<Long?> {
+    suspend fun getBnbBalance(address: String): Status<Double?> {
         return accountRepository().getBnbBalance(address, key)
     }
 

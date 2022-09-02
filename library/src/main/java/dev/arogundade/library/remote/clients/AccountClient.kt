@@ -16,7 +16,7 @@ interface AccountClient {
         @Query("action") action: String = "balance",
         @Query("address") address: String,
         @Query("apikey") key: String,
-    ): Response<BscResponse<Long>>
+    ): Response<BscResponse<Double>>
 
     @GET("api")
     suspend fun getBnbBalance(
